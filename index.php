@@ -18,7 +18,6 @@ include "classes/database.php";
 include "classes/element.php";
 include "classes/user.php";
 include "classes/upload.php";
-include "classes/geshi/geshi.php";
 
 
 /**
