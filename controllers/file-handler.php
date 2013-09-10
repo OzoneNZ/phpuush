@@ -46,37 +46,14 @@ if((isset($_GET["height"]) || isset($_GET["width"])) && substr($pUpload->mime_ty
 {
 	return;
 }
-elseif(isset($_SEO[1]))
+elseif(count($_SEO) >= 2)
 {
-	$sCacheItem = $aGlobalConfiguration["files"]["upload"]."/cache/geshi-".strtolower($_SEO[1])."-".$pUpload->file_hash.".html";	
-	$sRender = null;	
-	
-	if(!file_exists($sCacheItem))
+	if(!$pUpload->verifySecondaryAlias(@$_SEO[1]))
 	{
-		$sContents = file_get_contents($pUpload->local_path);
-		
-		$pGeshi = new Geshi($sContents, $_SEO[1]);
-		$sRender = $pGeshi->parse_code();
-		
-		file_put_contents($sCacheItem, $sRender);
-	}
-	else
-	{
-		$sRender = file_get_contents($sCacheItem);
+		header("Location: /");
+		return;
 	}
 	
-	header("Cache-Control: public");
-	header("Last-Modified: ".date("r", filemtime($sCacheItem)));
-	header("Content-Length: ".filesize($sCacheItem));
-	header("Content-Type: text/html");
-	header("Content-Transfer-Encoding: binary");
-	header("Content-MD5: ".md5_file($sCacheItem));
-	header("Content-Disposition: inline; filename=".$pFunctions->quote($pUpload->file_name));
-	
-	echo $sRender;
-}
-else
-{
 	header("Cache-Control: public");
 	header("Last-Modified: ".date("r", filemtime($pUpload->local_path)));
 	header("Content-Length: {$pUpload->file_size}");
@@ -95,7 +72,9 @@ else
 	}
 	
 	fclose($rPointer);
+	$pUpload->incrementViews();
 }
-
-$pUpload->incrementViews();
-return;
+else
+{
+	header("Location: /");
+}

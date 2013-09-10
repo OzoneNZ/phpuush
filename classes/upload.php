@@ -25,7 +25,14 @@ class Upload extends Element
 		{
 			case "web_url":
 			{
-				return $this->web_url = $aGlobalConfiguration["files"]["domain"]."/".$this->alias;
+				if($aGlobalConfiguration['files']['protect'] === true)
+				{
+					return $this->web_url = $aGlobalConfiguration["files"]["domain"]."/".$this->alias."/".$this->protect_alias;
+				}
+				else
+				{
+					return $this->web_url = $aGlobalConfiguration["files"]["domain"]."/".$this->alias;
+				}
 			}
 			
 			case "local_path":
@@ -117,5 +124,23 @@ class Upload extends Element
 		}
 		
 		return $sString;
+	}
+	
+	
+	/**
+	 *	Generates a random secondary alias
+	 */
+	public function generateSecondaryAlias()
+	{
+		return substr(md5(mt_rand() . uniqid('', true)), 0, 12);
+	}
+	
+	
+	/**
+	 *	Verifies the secondary alias
+	 */
+	public function verifySecondaryAlias($sAlias)
+	{
+		return !strcmp($sAlias, $this->protect_alias);
 	}
 }
