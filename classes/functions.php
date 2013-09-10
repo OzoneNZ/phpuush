@@ -156,7 +156,7 @@ class Functions
 	
 	
 	/**
-	 *	Returns the MIME type of a file. Why did PHP have to depreciate a decent function?
+	 *	Returns the MIME type of a file. Why did PHP have to deprecate a decent function?
 	 */
 	public function getMimeType($sFileName)
 	{

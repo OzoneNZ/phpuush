@@ -1,6 +1,6 @@
 # phpuush
 
-So, you're probably confused as to what this is. Well, it's a proxy for puush. The developers for puush decided to be all stupid and refused to implement useless features like SFTP and FTP.
+So, you're probably confused as to what this is. Well, it's a proxy for puush. The developers for puush decided to be all stupid and refused to implement useful features like SFTP and FTP.
 
 So, my absolutely brilliant friend [mave](https://github.com/mave) decided to write a new proxy for puush in node.js. This, as far as we know, was the first alternative implementation of puush.
 

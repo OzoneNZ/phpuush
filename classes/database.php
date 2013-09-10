@@ -15,7 +15,7 @@ class Database extends SQLite3
 	/**
 	 *	Database query count. Useful for statistics?
 	 */
-	public $count = 0;
+	public $iCount = 0;
 	
 	
 	/**
@@ -41,7 +41,7 @@ class Database extends SQLite3
 	 */
 	public function query($sQuery, array $aArguments = null)
 	{
-		++$this->count;
+		++$this->iCount;
 
 		if($aArguments === null)
 		{
