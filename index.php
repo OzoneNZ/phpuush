@@ -10,9 +10,6 @@
  */
 
 
-date_default_timezone_set("Europe/London");
-
-
 /**
  *	Include our classes
  */
