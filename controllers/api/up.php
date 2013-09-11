@@ -83,7 +83,7 @@ $aDatabaseEntry = array
 (
 	"users_id" => $pUser->id,
 	"alias" => $pUpload->generateAlias(),
-	"protect_alias" => $pUpload->generateSecondaryAlias(),
+	"protect_alias" => $pUpload->generateProtectAlias(),
 	"file_name" => $aFileReference["name"],
 	"file_location" => $sFileLocation,
 	"file_size" => filesize("{$sTargetDirectory}/{$sFileLocation}"),

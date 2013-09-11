@@ -20,6 +20,7 @@ $aGlobalConfiguration = array
 	
 	"files" => array
 	(
+		"handlers" => __DIR__."/handlers/",
 		"upload" => __DIR__."/uploads/",
 		"domain" => "http://your.domain.tld",
 	),

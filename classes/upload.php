@@ -25,14 +25,7 @@ class Upload extends Element
 		{
 			case "web_url":
 			{
-				if($aGlobalConfiguration['files']['protect'] === true)
-				{
-					return $this->web_url = $aGlobalConfiguration["files"]["domain"]."/".$this->alias."/".$this->protect_alias;
-				}
-				else
-				{
-					return $this->web_url = $aGlobalConfiguration["files"]["domain"]."/".$this->alias;
-				}
+				return $this->web_url = $aGlobalConfiguration["files"]["domain"]."/".$this->alias."/".$this->protect_alias;
 			}
 			
 			case "local_path":
@@ -73,15 +66,6 @@ class Upload extends Element
 		);
 		
 		return $this->load($aConditions);
-	}
-	
-	
-	/**
-	 *	Retrieves a file resource of this file.
-	 */
-	public function getFile()
-	{
-		return fopen($this->local_path, "r");
 	}
 	
 	
@@ -128,18 +112,18 @@ class Upload extends Element
 	
 	
 	/**
-	 *	Generates a random secondary alias
+	 *	Generates a random protect alias
 	 */
-	public function generateSecondaryAlias()
+	public function generateProtectAlias()
 	{
-		return substr(md5(mt_rand() . uniqid('', true)), 0, 12);
+		return substr(md5(mt_rand() . uniqid('', true)), 0, 6);
 	}
 	
 	
 	/**
-	 *	Verifies the secondary alias
+	 *	Verifies the protect alias
 	 */
-	public function verifySecondaryAlias($sAlias)
+	public function verifyProtectAlias($sAlias)
 	{
 		return !strcmp($sAlias, $this->protect_alias);
 	}
