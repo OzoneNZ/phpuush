@@ -16,6 +16,7 @@
 include "classes/functions.php";
 include "classes/database.php";
 include "classes/element.php";
+include "classes/handlers.php";
 include "classes/user.php";
 include "classes/upload.php";
 
