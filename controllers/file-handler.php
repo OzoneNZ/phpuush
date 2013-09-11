@@ -46,32 +46,37 @@ if((isset($_GET["height"]) || isset($_GET["width"])) && substr($pUpload->mime_ty
 {
 	return;
 }
-elseif(count($_SEO) >= 2)
+elseif(isset($_SEO[1]))
 {
-	if(!$pUpload->verifySecondaryAlias(@$_SEO[1]))
+	if(!$pUpload->verifyProtectAlias(@$_SEO[1]))
 	{
 		header("Location: /");
 		return;
 	}
 	
-	header("Cache-Control: public");
-	header("Last-Modified: ".date("r", filemtime($pUpload->local_path)));
-	header("Content-Length: {$pUpload->file_size}");
-	header("Content-Type: {$pUpload->mime_type}");
-	header("Content-Transfer-Encoding: binary");
-	header("Content-MD5: {$pUpload->file_hash}");
-	header("Content-Disposition: inline; filename=".$pFunctions->quote($pUpload->file_name));
+	ob_end_flush();
 	
-	$rPointer = $pUpload->getFile();
-	$sContents = "";
-	
-	while(($sContents = fread($rPointer, 1024)))
+	if(isset($_SEO[2]))
 	{
-		echo $sContents;
-		flush();
+		if(!Handlers::loopThrough($pUpload, $_SEO))
+		{
+			header("Location: /");
+			return;
+		}
+	}
+	else
+	{
+		header("Cache-Control: public");
+		header("Last-Modified: ".date("r", filemtime($pUpload->local_path)));
+		header("Content-Length: {$pUpload->file_size}");
+		header("Content-Type: {$pUpload->mime_type}");
+		header("Content-Transfer-Encoding: binary");
+		header("Content-MD5: {$pUpload->file_hash}");
+		header("Content-Disposition: inline; filename=".$pFunctions->quote($pUpload->file_name));
+		
+		readfile($pUpload->local_path);
 	}
 	
-	fclose($rPointer);
 	$pUpload->incrementViews();
 }
 else
