@@ -1,30 +1,55 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 	<head>
-		<title>phpuush registration page</title>
+		<title>registration | phpuush</title>
+		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+		<style type="text/css">
+			body {
+				padding-top: 40px;
+				padding-bottom: 40px;
+				background-color: #f5f5f5;
+			}
+
+			.form-register {
+				max-width: 300px;
+				padding: 19px 29px 29px;
+				margin: 0 auto 20px;
+				background-color: #fff;
+				border: 1px solid #e5e5e5;
+				-webkit-border-radius: 5px;
+				-moz-border-radius: 5px;
+				border-radius: 5px;
+				-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+				-moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+				box-shadow: 0 1px 2px rgba(0,0,0,.05);
+			}
+			
+			.form-register .form-register-heading,
+			.form-register .checkbox {
+				margin-bottom: 10px;
+			}
+			
+			.form-register input[type="text"],
+			.form-register input[type="password"] {
+				font-size: 16px;
+				height: auto;
+				margin-bottom: 15px;
+				padding: 7px 9px;
+			}
+
+		</style>
 	</head>
-	
 	<body>
-		<h1>phpuush registration page</h1>
-		
-		<form method="POST">
-			<table>
-				<tr>
-					<th>E-mail</th>
-					<td><input name="email" type="text" /></td>
-				</tr>
-				
-				<tr>
-					<th>Password</th>
-					<td><input name="password" type="password" /></td>
-				</tr>
-				
-				<tr>
-					<td></td>
-					<td><input name="submit" type="submit" value="Register" /></td>
-				</tr>
-			</table>
-		</form>
+		<div class="container">
+			<form class="form-register" method="post">
+				<h2 class="form-register-heading">phpuush register</h2>
+				<input name="email" type="text" class="input-block-level" placeholder="Email address" />
+				<input name="password" type="password" class="input-block-level" placeholder="Password" />
+				<label class="checkbox">
+					<input type="checkbox"> Purge registration?
+				</label>
+				<button class="btn btn-large btn-primary" type="submit">Register</button>
+			</form>
+		</div>
 	</body>
 </html>
