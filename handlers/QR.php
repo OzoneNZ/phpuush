@@ -9,21 +9,40 @@
  *	@version: 0.1
  */
  
+ 
 class Handler_QR
 {
-	public function __construct()
-	{
-		global
-			$aGlobalConfiguration;
-			
-		require_once $aGlobalConfiguration['files']['handlers'] . 'qrlib/qrlib.php';
-	}
-
 	public function onFileRequest(&$pUpload, $_SEO)
 	{
-		if(!strcasecmp($_SEO[2], 'qr') && $pUpload->file_size < 2048)
+		global
+			$aGlobalConfiguration,
+			$pFunctions;
+	
+		if(!strcasecmp($_SEO[2], 'qr') && $pUpload->file_size < 1024)
 		{
-			return QRcode::png(file_get_contents($pUpload->local_path));
+			$sCacheItem = $aGlobalConfiguration["files"]["upload"]."cache/qr-".strtolower($_SEO[0])."-".$pUpload->file_hash.".png";
+			$sRender = null;
+			
+			if(!file_exists($sCacheItem))
+			{
+				$sRender = file_get_contents("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=".urlencode(file_get_contents($pUpload->local_path)));
+				file_put_contents($sCacheItem, $sRender);
+			}
+			else
+			{
+				$sRender = file_get_contents($sCacheItem);
+			}
+			
+			header("Cache-Control: public");
+			header("Last-Modified: ".date("r", filemtime($sCacheItem)));
+			header("Content-Length: ".filesize($sCacheItem));
+			header("Content-Type: image/png");
+			header("Content-Transfer-Encoding: binary");
+			header("Content-MD5: ".md5_file($sCacheItem));
+			header("Content-Disposition: inline; filename=".$pFunctions->quote($pUpload->file_name));
+		
+			echo $sRender;
+			return true;
 		}
 	}
 }
