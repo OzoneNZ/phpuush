@@ -56,8 +56,6 @@ And then restart puush.
 
 ## Setting up your client on OS X - r62
 
-Only attempt this if you're experienced with how to hexedit binaries and such. You will need to create a SSL certificate (self signed is fine) though.
-
 ### Choosing the domain to point to
 
 Thankfully I managed to negate the need for a SSL certificate. This has just made the task from extremely hard to relatively easy.
