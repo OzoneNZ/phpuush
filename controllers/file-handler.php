@@ -54,8 +54,6 @@ elseif(isset($_SEO[1]))
 		return;
 	}
 	
-	ob_end_flush();
-	
 	if(isset($_SEO[2]))
 	{
 		if(!Handlers::loopThrough($pUpload, $_SEO))
