@@ -32,12 +32,12 @@ else
 			"api_key" => sha1($_POST["email"].$_POST["password"].uniqid()),
 		);
 		
-		$pDatabase->insert("users", $aPersonalInformation);
+		if($pDatabase->insert("users", $aPersonalInformation))
+		{
+			$pFunctions->template("register-success");
+			return;
+		}
 		
-		$pFunctions->template("register-success");
-	}
-	else
-	{
 		$pFunctions->template("register-failure");
 	}
 }
