@@ -37,7 +37,11 @@ class Handlers
 		if(class_exists($sHandler) && method_exists($sHandler, 'onFileRequest'))
 		{
 			$pInstance = new $sHandler;
-			$pInstance->onFileRequest($pUpload, $_SEO);
+			
+			if($pInstance->onFileRequest($pUpload, $_SEO))
+			{
+				return true;
+			}
 		}
 		else
 		{
