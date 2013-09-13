@@ -1,6 +1,6 @@
 <?php
 /**
- *	QR Code output handler for phpuush
+ *	GeSHi implementation for phpuush
  *
  *	@author Blake <blake@totalru.in>
  *	@author PwnFlakes <pwnflak.es>
