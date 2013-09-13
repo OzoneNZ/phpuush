@@ -25,7 +25,7 @@ class Handler_QR
 			
 			if(!file_exists($sCacheItem))
 			{
-				$sRender = file_get_contents("https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=".urlencode(file_get_contents($pUpload->local_path)));
+				$sRender = file_get_contents("http://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=".urlencode(file_get_contents($pUpload->local_path)));
 				file_put_contents($sCacheItem, $sRender);
 			}
 			else
