@@ -26,7 +26,7 @@ class Handler_GeSHi
 			$aGlobalConfiguration,
 			$pFunctions;
 			
-		$sCacheItem = $aGlobalConfiguration["files"]["upload"]."/cache/geshi-".strtolower($_SEO[2])."-".$pUpload->file_hash.".html";
+		$sCacheItem = $aGlobalConfiguration["files"]["upload"]."cache/geshi-".strtolower($_SEO[2])."-".$pUpload->file_hash.".html";
 		$sRender = null;
 		
 		if(!file_exists($sCacheItem))

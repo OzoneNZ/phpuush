@@ -30,7 +30,7 @@ class Upload extends Element
 			
 			case "local_path":
 			{
-				return $this->local_path = $aGlobalConfiguration["files"]["upload"]."/".$this->file_location;
+				return $this->local_path = $aGlobalConfiguration["files"]["upload"].$this->file_location;
 			}
 			
 			default:

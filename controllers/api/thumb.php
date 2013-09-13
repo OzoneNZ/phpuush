@@ -61,11 +61,11 @@ if(substr($pUpload->mime_type, 0, 6) != "image/")
 	throw new Exception("Invalid MIME type - not an image.");
 }
 
-$sCache = $aGlobalConfiguration["files"]["upload"]."/cache/".$pUpload->file_hash.".".pathinfo($pUpload->file_name, PATHINFO_EXTENSION);
+$sCache = $aGlobalConfiguration["files"]["upload"]."cache/".$pUpload->file_hash.".".pathinfo($pUpload->file_name, PATHINFO_EXTENSION);
 
-if(!is_dir($aGlobalConfiguration["files"]["upload"]."/cache/"))
+if(!is_dir($aGlobalConfiguration["files"]["upload"]."cache/"))
 {
-	mkdir($aGlobalConfiguration["files"]["upload"]."/cache/");
+	mkdir($aGlobalConfiguration["files"]["upload"]."cache/");
 }
 
 header("Cache-Control: public");
