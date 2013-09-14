@@ -195,14 +195,7 @@ if(file_exists($sCache))
 	header("Content-MD5: ".md5_file($sCache));
 	header("Last-Modified: ".date("r", filemtime($sCache)));
 	
-	$rResource = fopen($sCache, "r");
-	$sContents = "";
-	
-	while(($sContents = fread($rResource, 1024)))
-	{
-		echo $sContents;
-		flush();
-	}
+	readfile($sCache);
 	
 	return;
 }
