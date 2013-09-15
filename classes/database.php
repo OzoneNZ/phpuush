@@ -8,16 +8,24 @@
  *
  *	@version: 0.1
  */
+ 
 
-
-class Database extends SQLite3
+class Database
 {
 	/**
 	 *	Database query count. Useful for statistics?
 	 */
-	public $iCount = 0;
+	public
+		$iCount = 0;
+		
 	
-	
+	/**
+	 *	PDO connection object
+	 */
+	public
+		$pMySQL;
+		
+		
 	/**
 	 *	Singleton method
 	 */
@@ -29,10 +37,36 @@ class Database extends SQLite3
 		{
 			global $aGlobalConfiguration;
 			
-			$pInstance = new Database($aGlobalConfiguration["databases"]["sql"]);
+			$pInstance = new Database($aGlobalConfiguration["mysql"]);
 		}
 		
 		return $pInstance;
+	}
+	
+	
+	/**
+	 *	Database constructor, PDO connection initialiser.
+	 */
+	public function __construct(array $aCredentials)
+	{
+		$this->pMySQL = new PDO
+		(
+			'mysql:host=' . $aCredentials['hostname'] . ';dbname=' . $aCredentials['database'],
+			$aCredentials['username'],
+			$aCredentials['password']
+		);
+	}
+	
+	
+	/**
+	 *	Manually-implemented close method, since we're no longer extending SQLite3
+	 */
+	public function close()
+	{
+		if(is_object($this->pMySQL))
+		{
+			$this->pMySQL = null;
+		}
 	}
 	
 	
@@ -42,68 +76,20 @@ class Database extends SQLite3
 	public function query($sQuery, array $aArguments = null)
 	{
 		++$this->iCount;
-
+		
 		if($aArguments === null)
 		{
-			return parent::query($sQuery);
+			return $this->pMySQL->query($sQuery);
 		}
 		
-		$pStatement = parent::prepare($sQuery);
+		$pStatement = $this->pMySQL->prepare($sQuery);
 		
-		$iFragmentPosition = 0;
-		$iArgumentType = null;
-
-		foreach($aArguments as $sKey => &$mArgument)
+		if($pStatement->execute($aArguments))
 		{
-			if(is_string($mArgument))
-			{
-				$iArgumentType = SQLITE3_TEXT;
-			}
-			elseif(is_integer($mArgument))
-			{
-				$iArgumentType = SQLITE3_INTEGER;
-			}
-			elseif(is_bool($mArgument))
-			{
-				$mArgument = (integer) $mArgument;
-				$iArgumentType = SQLITE3_INTEGER;
-			}
-			elseif(is_float($mArgument))
-			{
-				$iArgumentType = SQLITE3_FLOAT;
-			}
-			elseif(is_object($mArgument))
-			{
-				$pReflection = new ReflectionClass($mArgument);
-				
-				if($pReflection->hasMethod("__toString"))
-				{
-					$mArgument = (string) $mArgument;
-					$iArgumentType = SQLITE3_TEXT;
-				}
-				else
-				{
-					$mArgument = serialize($mArgument);
-					$iArgumentType = SQLITE3_BLOB;
-				}
-			}
-			else
-			{
-				$mArgument = serialize($mArgument);
-				$iArgumentType = SQLITE3_BLOB;
-			}
-			
-			if(is_numeric($sKey))
-			{
-				$pStatement->bindParam(++$iFragmentPosition, $mArgument, $iArgumentType);
-			}
-			else
-			{
-				$pStatement->bindParam((string) $sKey, $mArgument, $iArgumentType);
-			}
+			return $pStatement;
 		}
 		
-		return $pStatement->execute();
+		return false;
 	}
 	
 	
@@ -114,16 +100,10 @@ class Database extends SQLite3
 	{
 		if($aArguments === null)
 		{
-			return parent::exec($sQuery);
+			return $this->pMySQL->query($sQuery);
 		}
 		
 		$pResult = $this->query($sQuery, $aArguments);
-		
-		if($pResult)
-		{
-			$pResult->finalize();
-		}
-		
 		return $pResult !== false;
 	}
 	
@@ -138,12 +118,10 @@ class Database extends SQLite3
 		
 		if($pResult)
 		{
-			while(($aResult = $pResult->fetchArray(SQLITE3_ASSOC)))
+			foreach($pResult->fetchAll(PDO::FETCH_ASSOC) as $aResult)
 			{
 				$aReturn[] = (object) $aResult;
 			}
-			
-			$pResult->finalize();
 			
 			return $aReturn;
 		}
@@ -157,7 +135,7 @@ class Database extends SQLite3
 	 */
 	public function quote($sString)
 	{
-		return parent::escapeString($sString);
+		return $this->pMySQL->quote($sString);
 	}
 	
 	
@@ -169,19 +147,12 @@ class Database extends SQLite3
 		$aKeys = array_keys($aValues);
 		$aFragments = array();
 		
-		$iFragmentCount = count($aKeys);
-		
 		foreach($aValues as $sKey => $sValue)
 		{
 			$aFragments[] = ":{$sKey}";
 		}
-		
-		if($this->busyTimeout(2500))
-		{
-			$this->exec("INSERT INTO [{$sTable}] ([".implode("], [", $aKeys)."]) VALUES (".implode(", ", $aFragments).")", $aValues);
-			return $this->lastInsertRowID();
-		}
-		
-		throw new Exception("Database error.");
+
+		$this->exec("INSERT INTO {$sTable} (".implode(", ", $aKeys).") VALUES (".implode(", ", $aFragments).")", $aValues);
+		return $this->pMySQL->lastInsertId();
 	}
 }

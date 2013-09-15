@@ -24,4 +24,13 @@ $aGlobalConfiguration = array
 		"upload" => __DIR__."/uploads/",
 		"domain" => "http://your.domain.tld",
 	),
+	
+	"mysql" => array
+	(
+		"hostname" => "localhost",
+		"username" => "root",
+		"password" => "root",
+		"database" => "phpuush"
+	)
+	
 );

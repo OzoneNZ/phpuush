@@ -28,11 +28,23 @@ include "configuration.php";
 
 
 /**
+ *	Attempt initialisation of the MySQL connection
+ */
+try
+{
+	$pDatabase = Database::getInstance();
+}
+catch(Exception $pException)
+{
+	echo "-1";
+	exit;
+}
+
+
+/**
  *	Do some defining stuff
  */
 $pFunctions = Functions::getInstance();
-$pDatabase = Database::getInstance();
-
 $_SEO = $pFunctions->translateRequestURI();
 
 
