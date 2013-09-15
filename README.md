@@ -14,30 +14,40 @@ Well, many things. You could pick your nose and eat it - or you could follow som
 
 ## Create the database
 
-At the moment, only SQLite is supported, however it's my intention to add mySQL and/or another (no)SQL to make those hipsters all happy and shit.
+MySQL support through the PHP PDO extension has been implemented to replace the SQLite storage. 
 
-Go into the `databases/` directory and **copy** `phpuush.db-dist` to something like `phpuush.db` or something.
+Go into the `databases/` directory and import `phpuush.sql-dist` into your MySQL database to initialise it for use.
+
+For anyone still looking for a SQLite version, the `sqlite` branch has a final SQLite release.
 
 ## More configuration
 
 Here's a sample `configuration.php` file:
 
     $aGlobalConfiguration = array
-    (
-        "databases" => array
-        (
-            "sql" => __DIR__."/databases/phpuush.db",
-            "mime" => __DIR__."/databases/mime.types",
-        ),
-        
-        "files" => array
-        (
-            "upload" => __DIR__."/uploads/",
-            "domain" => "http://your.domain.tld",
-        ),
-    );
+	(
+		"databases" => array
+		(
+			"mime" => __DIR__."/databases/mime.types",
+		),
+		
+		"files" => array
+		(
+			"handlers" => __DIR__."/handlers/",
+			"upload" => __DIR__."/uploads/",
+			"domain" => "http://your.domain.tld",
+		),
+		
+		"mysql" => array
+		(
+			"hostname" => "localhost",
+			"username" => "root",
+			"password" => "root",
+			"database" => "phpuush"
+		)
+	);
 
-You'll need to edit only two things, one being the SQLite DB file (look up!) and the other being the domain. The domain is obviously the one that you *have* to change.
+You'll need to enter your MySQL credentials AND change your domain, otherwise your puush links won't be of much use.
 
 ## Setting up webservers
 

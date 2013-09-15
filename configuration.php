@@ -14,7 +14,6 @@ $aGlobalConfiguration = array
 (
 	"databases" => array
 	(
-		"sql" => __DIR__."/databases/phpuush.db",
 		"mime" => __DIR__."/databases/mime.types",
 	),
 	
@@ -32,5 +31,4 @@ $aGlobalConfiguration = array
 		"password" => "root",
 		"database" => "phpuush"
 	)
-	
 );
