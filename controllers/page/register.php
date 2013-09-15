@@ -35,6 +35,12 @@ else
 		if($pDatabase->insert("users", $aPersonalInformation))
 		{
 			$pFunctions->template("register-success");
+			
+			if(isset($_POST["purge"]))
+			{
+				unlink(__FILE__);
+			}
+			
 			return;
 		}
 		
