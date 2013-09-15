@@ -16,7 +16,7 @@ Well, many things. You could pick your nose and eat it - or you could follow som
 
 MySQL support through the PHP PDO extension has been implemented to replace the SQLite storage. 
 
-Go into the `databases/` directory and import `phpuush.sql-dist` into your MySQL database to initialise it for use.
+Go into the `databases` directory and import `phpuush.sql` into your MySQL database to initialise it for use.
 
 For anyone still looking for a SQLite version, the `sqlite` branch has a final SQLite release.
 
