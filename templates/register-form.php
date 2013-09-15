@@ -46,7 +46,7 @@
 				<input name="email" type="text" class="input-block-level" placeholder="Email address" />
 				<input name="password" type="password" class="input-block-level" placeholder="Password" />
 				<label class="checkbox">
-					<input type="checkbox"> Purge registration?
+					<input name="purge" type="checkbox" value="Yes"> Purge registration?
 				</label>
 				<button class="btn btn-large btn-primary" type="submit">Register</button>
 			</form>
