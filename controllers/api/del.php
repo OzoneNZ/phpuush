@@ -58,7 +58,7 @@ if($pUpload->users_id != $pUser->id)
 /**
  *	We'll just start removing things.
  */
-$pDatabase->exec("UPDATE uploads SET is_deleted = '1' WHERE rowid = ? AND users_id = ?", array($pUpload->id, $pUser->id));
+$pDatabase->exec("UPDATE uploads SET is_deleted = 1 WHERE id = ? AND users_id = ?", array($pUpload->id, $pUser->id));
 
 
 /**
