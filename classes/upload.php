@@ -74,10 +74,7 @@ class Upload extends Element
 	 */
 	public function incrementViews()
 	{
-		if($this->pDatabase->busyTimeout(250))
-		{
-			return $this->pDatabase->exec("UPDATE [{$this->db_table}] SET [views] = [views] + 1 WHERE [rowid] = ?", array($this->id));
-		}
+		return $this->pDatabase->exec("UPDATE {$this->db_table} SET views = views + 1 WHERE id = ?", array($this->id));
 	}
 	
 	
@@ -100,7 +97,7 @@ class Upload extends Element
 			++$iIndex;
 		}
 		
-		$aResults = $this->pDatabase->fetch("SELECT count(1) AS item_count FROM [uploads] WHERE [alias] = ?", array($sString));
+		$aResults = $this->pDatabase->fetch("SELECT count(1) AS item_count FROM uploads WHERE alias = ?", array($sString));
 		
 		if($aResults[0]->item_count)
 		{

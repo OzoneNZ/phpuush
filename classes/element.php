@@ -41,7 +41,7 @@ abstract class Element
 	{
 		$aPredicate = array();
 		
-		$sQuery = "SELECT rowid AS id, * FROM [{$this->db_table}] WHERE ";
+		$sQuery = "SELECT * FROM {$this->db_table} WHERE ";
 		
 		if(is_array($mValues))
 		{
@@ -49,7 +49,7 @@ abstract class Element
 			
 			foreach($mValues as $sKey => $mValue)
 			{
-				$aConditions[] = "[{$sKey}] = :{$sKey}";
+				$aConditions[] = "{$sKey} = :{$sKey}";
 				$aPredicate[$sKey] = $mValue;
 			}
 			
@@ -57,33 +57,30 @@ abstract class Element
 		}
 		elseif(is_numeric($mValues))
 		{
-			$sQuery .= "[rowid] = :rowid";
+			$sQuery .= "id = :id";
 			
 			$aPredicate = array
 			(
-				"rowid" => (integer) $mValues,
+				"id" => (integer) $mValues,
 			);
 		}
 		else
 		{
 			return false;
 		}
+
+		$aResults = $this->pDatabase->fetch($sQuery . " LIMIT 1", $aPredicate);
 		
-		if($this->pDatabase->busyTimeout(2500))
+		if($aResults)
 		{
-			$aResults = $this->pDatabase->fetch($sQuery." LIMIT 1", $aPredicate);
+			$pTarget = $aResults[0];
 			
-			if($aResults)
+			foreach($pTarget as $sKey => $mValue)
 			{
-				$pTarget = $aResults[0];
-				
-				foreach($pTarget as $sKey => $mValue)
-				{
-					$this->{$sKey} = $pTarget->{$sKey};
-				}
-				
-				return $this->id;
+				$this->{$sKey} = $pTarget->{$sKey};
 			}
+			
+			return $this->id;
 		}
 		
 		return false;
@@ -113,7 +110,7 @@ abstract class Element
 		{
 			foreach($aArguments["sort"] as $sKey => $sParam)
 			{
-				$aSort[] = "[{$sKey}] {$sParam}";
+				$aSort[] = "{$sKey} {$sParam}";
 			}
 		}
 		
@@ -129,7 +126,7 @@ abstract class Element
 			case "objects":
 			{
 				$aReturn = array();
-				$sQuery = "SELECT rowid AS id FROM [{$this->db_table}] ";
+				$sQuery = "SELECT id FROM {$this->db_table} ";
 				
 				if(count($aWhere))
 				{
@@ -162,7 +159,7 @@ abstract class Element
 			case "count":
 			{
 				$iReturn = 0;
-				$sQuery = "SELECT count(1) AS item_count FROM [{$this->db_table}] ";
+				$sQuery = "SELECT count(1) AS item_count FROM {$this->db_table} ";
 				
 				if(count($aWhere))
 				{

@@ -52,7 +52,7 @@ class User extends Element
 			"is_deleted" => false,
 		);
 		
-		$aResult = $this->pDatabase->fetch("SELECT sum(file_size) AS file_sum FROM [uploads] WHERE users_id = :users_id AND is_deleted = :is_deleted", $aFragments);
+		$aResult = $this->pDatabase->fetch("SELECT sum(file_size) AS file_sum FROM uploads WHERE users_id = :users_id AND is_deleted = :is_deleted", $aFragments);
 		
 		if($aResult)
 		{
