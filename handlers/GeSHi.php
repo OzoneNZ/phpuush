@@ -25,36 +25,39 @@ class Handler_GeSHi
 		global
 			$aGlobalConfiguration,
 			$pFunctions;
-			
-		$sCacheItem = $aGlobalConfiguration["files"]["upload"]."cache/geshi-".strtolower($_SEO[2])."-".$pUpload->file_hash.".html";
-		$sRender = null;
 		
-		if(!file_exists($sCacheItem))
+		if(in_array(strtolower($_SEO[2]), unserialize(file_get_contents($aGlobalConfiguration["files"]["handlers"] . "geshi/langs.ob"))))
 		{
-			$sContents = file_get_contents($pUpload->local_path);
+			$sCacheItem = $aGlobalConfiguration["files"]["upload"] . "cache/geshi-" . strtolower($_SEO[2]) . "-" . $pUpload->file_hash . ".html";
+			$sRender = null;
 			
-			$pGeshi = new Geshi($sContents, $_SEO[2]);
-			$sRender = $pGeshi->parse_code();
+			if(!file_exists($sCacheItem))
+			{
+				$sContents = file_get_contents($pUpload->local_path);
+				
+				$pGeshi = new Geshi($sContents, $_SEO[2]);
+				$sRender = $pGeshi->parse_code();
+				
+				file_put_contents($sCacheItem, $sRender);
+			}
+			else
+			{
+				$sRender = file_get_contents($sCacheItem);
+			}
 			
-			file_put_contents($sCacheItem, $sRender);
-		}
-		else
-		{
-			$sRender = file_get_contents($sCacheItem);
-		}
-		
-		if(md5($sRender) != $pUpload->file_hash)
-		{
-			header("Cache-Control: public");
-			header("Last-Modified: ".date("r", filemtime($sCacheItem)));
-			header("Content-Length: ".filesize($sCacheItem));
-			header("Content-Type: text/html");
-			header("Content-Transfer-Encoding: binary");
-			header("Content-MD5: ".md5_file($sCacheItem));
-			header("Content-Disposition: inline; filename=".$pFunctions->quote($pUpload->file_name));
-		
-			echo $sRender;
-			return true;
+			if(md5($sRender) != $pUpload->file_hash)
+			{
+				header("Cache-Control: public");
+				header("Last-Modified: ".date("r", filemtime($sCacheItem)));
+				header("Content-Length: ".filesize($sCacheItem));
+				header("Content-Type: text/html");
+				header("Content-Transfer-Encoding: binary");
+				header("Content-MD5: ".md5_file($sCacheItem));
+				header("Content-Disposition: inline; filename=".$pFunctions->quote($pUpload->file_name));
+			
+				echo $sRender;
+				return true;
+			}
 		}
 	}
 }
