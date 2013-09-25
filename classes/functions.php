@@ -134,7 +134,14 @@ class Functions
 		extract($aTemplateArguments);
 		unset($aTemplateArguments);
 		
-		require "{$_SERVER["DOCUMENT_ROOT"]}/templates/{$sTemplateName}.php";
+		if(file_exists("{$_SERVER["DOCUMENT_ROOT"]}/templates/{$sTemplateName}.php"))
+		{
+			require "{$_SERVER["DOCUMENT_ROOT"]}/templates/{$sTemplateName}.php";
+		}
+		elseif(file_exists("{$_SERVER["DOCUMENT_ROOT"]}/templates/{$sTemplateName}.html"))
+		{
+			require "{$_SERVER["DOCUMENT_ROOT"]}/templates/{$sTemplateName}.html";
+		}
 	}
 	
 	
