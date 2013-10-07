@@ -15,11 +15,6 @@ Requirements for operation of phpuush differ by the storage system. The followin
 * **PHP 5.4** or higher (lower versions such as 5.3 may work but are not guaranteed)
 * HTTP server capable of **URL rewriting** (configuration for Apache, nginx and lighttpd is supplied)
 
-<<<<<<< HEAD
-At the moment, only SQLite is supported, however it's my intention to add mySQL and/or another (no)SQL to make those hipsters all happy and shit.
-
-Go into the `databases/` directory and **copy** `phpuush.db-dist` to something like `phpuush.db` or something.
-=======
 ### MySQL
 * **MySQL 5** or higher
 * **PHP PDO** driver with MySQL support (php5-pdo on Debian / Ubuntu and php-pdo on CentOS)
@@ -29,34 +24,14 @@ Go into the `databases/` directory and **copy** `phpuush.db-dist` to something l
 * **Full read/write permissions** on the database file
 
 # Installation
->>>>>>> f4cd272... Re-write README.md
 
 ### MySQL
 
 The `phpuush.sql` file located inside the `databases` directory provides the base table structures. You can import this using any method you wish.
 
-<<<<<<< HEAD
-    $aGlobalConfiguration = array
-    (
-        "databases" => array
-        (
-            "sql" => __DIR__."/databases/phpuush.db",
-            "mime" => __DIR__."/databases/mime.types",
-        ),
-        
-        "files" => array
-        (
-            "upload" => __DIR__."/uploads/",
-            "domain" => "http://your.domain.tld",
-        ),
-    );
-
-You'll need to edit only two things, one being the SQLite DB file (look up!) and the other being the domain. The domain is obviously the one that you *have* to change.
-=======
 For example, you could use this command to import it in Linux:
 
 `mysql -u username -ppassword -h hostname -D database < databases/phpuush.sql`
->>>>>>> f4cd272... Re-write README.md
 
 ### SQLite
 
