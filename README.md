@@ -1,91 +1,85 @@
 # phpuush
 
-So, you're probably confused as to what this is. Well, it's a proxy for puush. The developers for puush decided to be all stupid and refused to implement useful features like SFTP and FTP.
+phpuush is an alternative [puush](http://puush.me) implementation in PHP, complete with all the functionality of the original.
 
-So, my absolutely brilliant friend [mave](https://github.com/mave) decided to write a new proxy for puush in node.js. This, as far as we know, was the first alternative implementation of puush.
+Currently, phpuush comes with two storage solutions, SQLite and MySQL.
 
-However, I wanted to experiment in the joys that is hiphop-php. So, I made this! It was designed on Apache, tested on nginx and compiled with hiphop-php.
+phpuush works by intercepting requests to the puush service and not forwarding them.
 
-I think I'm one of the only people in the world apart from Facebook using hiphop-php in a product environment, as it may seem.
+# Prerequisites
 
-# Oh. Okay. What do I do next?
+Requirements for operation of phpuush differ by the storage system. The following are tested and working:
 
-Well, many things. You could pick your nose and eat it - or you could follow some installation cues and get the damned thing working.
+### Base
 
-## Create the database
+* **PHP 5.4** or higher (lower versions such as 5.3 may work but are not guaranteed)
+* HTTP server capable of **URL rewriting** (configuration for Apache, nginx and lighttpd is supplied)
 
-MySQL support through the PHP PDO extension has been implemented to replace the SQLite storage. 
+### MySQL
+* **MySQL 5** or higher
+* **PHP PDO** driver with MySQL support (php5-pdo on Debian / Ubuntu and php-pdo on CentOS)
 
-Go into the `databases` directory and import `phpuush.sql` into your MySQL database to initialise it for use.
+### SQLite
+* **SQLite3** PHP library (php5-sqlite on Debian / Ubuntu)
+* **Full read/write permissions** on the database file
 
-For anyone still looking for a SQLite version, the `sqlite` branch has a final SQLite release.
+# Installation
 
-## More configuration
+### MySQL
 
-Here's a sample `configuration.php` file:
+The `phpuush.sql` file located inside the `databases` directory provides the base table structures. You can import this using any method you wish.
 
-    $aGlobalConfiguration = array
-	(
-		"databases" => array
-		(
-			"mime" => __DIR__."/databases/mime.types",
-		),
-		
-		"files" => array
-		(
-			"handlers" => __DIR__."/handlers/",
-			"upload" => __DIR__."/uploads/",
-			"domain" => "http://your.domain.tld",
-		),
-		
-		"mysql" => array
-		(
-			"hostname" => "localhost",
-			"username" => "root",
-			"password" => "root",
-			"database" => "phpuush"
-		)
-	);
+For example, you could use this command to import it in Linux:
 
-You'll need to enter your MySQL credentials AND change your domain, otherwise your puush links won't be of much use.
+`mysql -u username -ppassword -h hostname -D database < databases/phpuush.sql`
 
-## Setting up webservers
+### SQLite
 
-Oh, so you actually want this thing to be live, eh? Well, what you need to do is set up whatever webserver you have to either accept connections on another port that is not `80` or listen for `puush.me` - whatever floats your boat. There are a million ways to set it up.
+A blank `phpuush.db-dist` file is provided in the `databases` directory, ready for use. Simply rename this to `phpuush.db`.
 
-I'll add examples when I can be bothered.
+# Server Configuration
 
-## Setting up your client on Windows - r85
+All configuration directives are stored in `configuration.php`. Changes must be made before phpuush can be used.
 
-You just edit `%AppData%\puush\puush.ini` to resemble something like this:
+### MySQL
 
-    ProxyServer = someproxy
-    ProxyPort = someport
+The entire `mysql` section will need modification to include your MySQL username, password, hostname and database.
 
-And then restart puush.
+### SQLite
 
-## Setting up your client on OS X - r62
+The default value for this directive points to the `databases/phpuush.db` file. If you have already created this, you do not need to make any further changes.
 
-### Choosing the domain to point to
+### HTTP Server
 
-Thankfully I managed to negate the need for a SSL certificate. This has just made the task from extremely hard to relatively easy.
+There are a lot of different ways to set this up, and sample configurations are supplied in the `setup/httpdconf` directory for:
 
-First thing you have to do is add this to the `/private/etc/hosts` file:
+* Apache with mod_rewrite
+* nginx with HttpRewriteModule
+* lighttpd with mod_rewrite
 
-    <address> phpuushed
+Any other HTTP server with rewriting and PHP capability should work fine.
 
-Then, you replace your puush binary with the one in the repo. You can find this in
-`setup/binaries/OS X/puush` - you need to replace the binary in
-`puush.app/Contents/MacOS/puush` with the one on this repo.
+# Registration
 
-The only change is that I've changed `https://puush.me/` to `http://phpuushed/`.
+You can register new accounts with phpuush by visiting `http://your-domain/page/register`.
 
-## Using the client
+Once you have registered, you have the option to make the registration page self-destruct. Please note that if you do not do this, your registration will be publically available.
 
-You will need to register by going to:
+# Client Configuration
 
-`http://someproxy:someport/page/register`
+### Windows
 
-Don't want to allow anyone else to register? Just rename `controllers/page/register.php` or whatever you want.
+Windows configuration is the simplest with the built in `ProxyServer` and `ProxyPort` settings that puush has.
 
-Know of any improvements? Hit me!
+1. Close the puush client if it is open
+2. Set the `ProxyServer = ip-address-of-your-phpuush` directive
+3. Set the `ProxyPort = port-number-of-your-phpuush` directive
+4. Re-open puush and authenticate for the first time
+
+### Mac OS X (r62)
+
+1. Close the puush client if it is open
+2. Edit the `/private/etc/hosts` file with elevated privileges
+3. Add a new entry with `<ip address of your phpuush> phpuushed`
+4. Replace your `puush.app/Contents/MacOS/puush` binary file with the copy supplied in `setup/binaries/OS X/puush`
+5. Re-open puush and authenticate for the first time
