@@ -105,7 +105,7 @@ $pUpload->load($iIdentifier);
 
 $aOutput = array
 (
-	"1",
+	"0",
 	$pUpload->web_url,
 	$pUpload->id,
 	$pUpload->file_size,
