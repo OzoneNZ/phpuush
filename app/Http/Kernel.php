@@ -32,6 +32,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             'throttle:60,1',
+            \App\Http\Middleware\ClientCheck::class
         ],
     ];
 
