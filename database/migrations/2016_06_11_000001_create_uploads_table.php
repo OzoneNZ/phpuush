@@ -37,6 +37,7 @@ class CreateUploadsTable extends Migration
              */
             $table->string('file_name', 256);
             $table->string('file_location', 256);
+            $table->integer('file_size');
             $table->string('file_hash' , 32);
             $table->string('mime_type', 256);
 
