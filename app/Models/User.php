@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+use DB;
+
+class User extends Authenticatable
 {
     /**
      *  Fillable fields
@@ -20,4 +23,21 @@ class User extends Model
     protected $hidden = [
         'password'
     ];
+
+
+    /**
+     *  Counts up the used filesystem space from the user
+     */
+    public function getTotalUploadedBytes()
+    {
+        // Sum all upload file sizes
+        $size = DB::select('
+            SELECT SUM(file_size) AS total_bytes
+            FROM uploads
+            WHERE user_id = ? AND is_deleted = 0
+        ', [ $this->id ])[0];
+
+        // Check for a user with no uploads
+        return ($size) ? $size->total_bytes : 0;
+    }
 }
