@@ -30,4 +30,13 @@ class Upload extends Model
     protected $hidden = [
         'password'
     ];
+
+
+    /**
+     *  User relationship
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
