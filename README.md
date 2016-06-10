@@ -1,85 +1,27 @@
-# phpuush
+# Laravel PHP Framework
 
-phpuush is an alternative [puush](http://puush.me) implementation in PHP, complete with all the functionality of the original.
+[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
+[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
+[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
+[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
+[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
 
-Currently, phpuush comes with two storage solutions, SQLite and MySQL.
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
 
-phpuush works by intercepting requests to the puush service and not forwarding them.
+Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
 
-# Prerequisites
+## Official Documentation
 
-Requirements for operation of phpuush differ by the storage system. The following are tested and working:
+Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
 
-### Base
+## Contributing
 
-* **PHP 5.4** or higher (lower versions such as 5.3 may work but are not guaranteed)
-* HTTP server capable of **URL rewriting** (configuration for Apache, nginx and lighttpd is supplied)
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
 
-### MySQL
-* **MySQL 5** or higher
-* **PHP PDO** driver with MySQL support (php5-pdo on Debian / Ubuntu and php-pdo on CentOS)
+## Security Vulnerabilities
 
-### SQLite
-* **SQLite3** PHP library (php5-sqlite on Debian / Ubuntu)
-* **Full read/write permissions** on the database file
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
 
-# Installation
+## License
 
-### MySQL
-
-The `phpuush.sql` file located inside the `databases` directory provides the base table structures. You can import this using any method you wish.
-
-For example, you could use this command to import it in Linux:
-
-`mysql -u username -ppassword -h hostname -D database < databases/phpuush.sql`
-
-### SQLite
-
-A blank `phpuush.db-dist` file is provided in the `databases` directory, ready for use. Simply rename this to `phpuush.db`.
-
-# Server Configuration
-
-All configuration directives are stored in `configuration.php`. Changes must be made before phpuush can be used.
-
-### MySQL
-
-The entire `mysql` section will need modification to include your MySQL username, password, hostname and database.
-
-### SQLite
-
-The default value for this directive points to the `databases/phpuush.db` file. If you have already created this, you do not need to make any further changes.
-
-### HTTP Server
-
-There are a lot of different ways to set this up, and sample configurations are supplied in the `setup/httpdconf` directory for:
-
-* Apache with mod_rewrite
-* nginx with HttpRewriteModule
-* lighttpd with mod_rewrite
-
-Any other HTTP server with rewriting and PHP capability should work fine.
-
-# Registration
-
-You can register new accounts with phpuush by visiting `http://your-domain/page/register`.
-
-Once you have registered, you have the option to make the registration page self-destruct. Please note that if you do not do this, your registration will be publically available.
-
-# Client Configuration
-
-### Windows
-
-Windows configuration is the simplest with the built in `ProxyServer` and `ProxyPort` settings that puush has.
-
-1. Close the puush client if it is open
-2. Set the `ProxyServer = ip-address-of-your-phpuush` directive
-3. Set the `ProxyPort = port-number-of-your-phpuush` directive
-4. Re-open puush and authenticate for the first time
-
-### Mac OS X (r62)
-
-1. Close the puush client if it is open
-2. Edit the `/private/etc/hosts` file with elevated privileges
-3. Add a new entry with `<ip address of your phpuush> phpuushed`
-4. Replace your `puush.app/Contents/MacOS/puush` binary file with the copy supplied in `setup/binaries/OS X/puush`
-5. Re-open puush and authenticate for the first time
+The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
